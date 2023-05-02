@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Motor selector</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid black;
+        }
+
+    </style>
+</head>
+
+<body>
+    <h1>Motor selector</h1>
+
+    <select id="motor-list">
+        <option value="FP3SS 562-2" selected>FP3SS 562-2</option>
+        <option value="Motor 2">Motor 2</option>
+        <option value="Motor 3">Motor 3</option>
+    </select>
+
+    <label for="frontshield-list">Frontshield:</label>
+    <select id="frontshield-list">
+        <option value="B14A" selected>B14A</option>
+        <option value="B14B">B14B</option>
+        <option value="B5">B5</option>
+        <option value="B3">B3</option>
+        <option value="B5T1">B5T1</option>
+        <option value="B5T2">B5T2</option>
+        <option value="B5T3">B5T3</option>
+        <option value="B5T4">B5T4</option>
+        <option value="B5T5">B5T5</option>
+        <option value="B3 B14A">B3 B14A</option>
+        <option value="B3 B14B">B3 B14B</option>
+        <option value="B3 B5">B3 B5</option>
+        <option value="B3 B5T1">B3 B5T1</option>
+        <option value="B3 B5T2">B3 B5T2</option>
+        <option value="B3 B5T3">B3 B5T3</option>
+        <option value="B3 B5T4">B3 B5T4</option>
+        <option value="B3 B5T5">B3 B5T5</option>
+    </select>
+
+    <label for="cooling-list">Cooling:</label>
+    <select id="cooling-list">
+        <option value="TENV" selected>TENV</option>
+        <option value="TEFC">TEFC</option>
+        <option value="TEWC">TEWC</option>
+    </select>
+
+    <label for="option-list">Option:</label>
+    <select id="option-list">
+        <option value="EN">EN</option>
+        <option value="EJ">EJ</option>
+        <option value="geen" selected>geen</option>
+    </select>
+
+    <label for="kk-list">KK:</label>
+    <select id="kk-list">
+        <option value="KK1">KK1</option>
+        <option value="KK2">KK2</option>
+        <option value="KK4">KK4</option>
+    </select>
+    <br>
+    <p id="motor-string">test</p>
+</body>
+
+</html>
