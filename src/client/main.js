@@ -7,36 +7,23 @@ list.addEventListener('change', (e) => {
     GLTFViewer.loadGltf(list.value)
 })
 
+function httpGetAsync(url, callback) {
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function () {
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+            callback(xmlHttp.responseText);
+    }
+    xmlHttp.open("GET", url, true); // true for asynchronous
+    xmlHttp.send(null);
+}
 
-// const motorList = document.getElementById("motor-list");
-// const frontshieldList = document.getElementById("frontshield-list");
-// const coolingList = document.getElementById("cooling-list");
-// const optionList = document.getElementById("option-list");
-// const kkList = document.getElementById("kk-list");
-// const motorString = document.getElementById("motor-string")
-
-// let motor = ""
-// let frontshield = ""
-// let cooling = ""
-// let option = ""
-// let kk = ""
-
-// motorList.addEventListener('change', callback);
-// frontshieldList.addEventListener('change', callback);
-// coolingList.addEventListener('change', callback);
-// optionList.addEventListener('change', callback);
-// kkList.addEventListener('change', callback);
-
-// function callback(e) {
-//     motor = motorList.value
-//     frontshield = frontshieldList.value
-//     cooling = coolingList.value
-//     option = optionList.value
-//     kk = kkList.value
-
-//     let str = `${motor} ${frontshield} ${cooling} ${option} ${kk}`
-//     console.log(str)
-//     motorString.innerHTML = str;
-// }
-
-
+httpGetAsync("/getGLB", (responseText) => {
+    const glbFiles = JSON.parse(responseText)
+    glbFiles.forEach(fileName => {
+        const option = document.createElement("option");
+        option.text = fileName;
+        list.add(option)
+    });
+    console.log(`received GET response:`)
+    console.log(responseText)
+})

@@ -6,9 +6,11 @@ import fs from 'fs'
 export default class HttpServer {
     private server?: Express;
     private path = "./src/client";
+    private glbPath = "./public/GLB"
     private htmlFile = fs.readFileSync(`${this.path}/index.html`, { encoding: "utf-8" })
     private jsFile = fs.readFileSync(`${this.path}/main.js`, { encoding: "utf-8" })
     private gltfViewerFile = fs.readFileSync(`${this.path}/GLTFViewer.js`, { encoding: "utf-8" })
+    private glbFiles = fs.readdirSync(this.glbPath)
     decoder = new TextDecoder();
 
     constructor() {
@@ -29,23 +31,22 @@ export default class HttpServer {
             res.type('js')
             res.send(fs.readFileSync(`${this.path}/GLTFViewer.js`, { encoding: "utf-8" }))
         })
-        // this.server.get('/test.glb', (req: Request, res) => {
-        //     // res.type('js')
-        //     res.send(this.jsFile)
-        // })
+        this.server.get('/getGLB', (req: Request, res) => {
+
+            res.send(this.glbFiles)
+        })
+
         this.server.get(/\/\S+\.glb/, (req, res, next) => {
-            console.log(`gottem: ${req.url}`)
             var options = {
-                root: `${__dirname}\\..\\public\\`,
+                root: `${__dirname}\\..\\public\\GLB\\`,
                 dotfiles: 'deny',
                 headers: {
                     'x-timestamp': Date.now(),
                     'x-sent': true
                 }
             }
-            console.log(options)
 
-            var fileName = `${req.url.split(".")[0]}.glb`
+            var fileName = `${req.url.split(".")[0]}.glb`.replaceAll("%20", " ")
             res.sendFile(fileName, options as SendFileOptions, function (err) {
                 if (err) {
                     next(err)
