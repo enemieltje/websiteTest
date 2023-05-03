@@ -1,11 +1,10 @@
 import GLTFViewer from './GLTFViewer.js'
 
-const list = document.getElementById("list");
+const optionSelectDiv = document.createElement("div");
+document.body.appendChild(optionSelectDiv);
+
 GLTFViewer.start()
-GLTFViewer.loadGltf(list.value)
-list.addEventListener('change', (e) => {
-    GLTFViewer.loadGltf(list.value)
-})
+// GLTFViewer.loadGltf(list.value)
 
 function httpGetAsync(url, callback) {
     var xmlHttp = new XMLHttpRequest();
@@ -18,12 +17,31 @@ function httpGetAsync(url, callback) {
 }
 
 httpGetAsync("/getGLB", (responseText) => {
-    const glbFiles = JSON.parse(responseText)
-    glbFiles.forEach(fileName => {
-        const option = document.createElement("option");
-        option.text = fileName;
-        list.add(option)
-    });
-    console.log(`received GET response:`)
     console.log(responseText)
+
+    const glbFiles = JSON.parse(responseText)
+    glbFiles.forEach(optionSet => {
+        const select = document.createElement("select");
+        select.addEventListener('change', optionCallback)
+
+        optionSet.forEach((optionText) => {
+            const option = document.createElement("option");
+            option.text = optionText;
+            select.add(option)
+        })
+
+        optionSelectDiv.append(select)
+    });
 })
+
+function optionCallback(e) {
+    let fileName = ""
+
+    for (const select of optionSelectDiv.children)
+    {
+        fileName += select.value
+        fileName += " "
+    }
+    GLTFViewer.loadGltf(fileName)
+
+}

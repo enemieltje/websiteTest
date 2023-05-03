@@ -102,9 +102,14 @@ export default class GLTFViewer {
             // remove the old one
             if (GLTFViewer.gltfObject) GLTFViewer.scene.remove(GLTFViewer.gltfObject)
 
+            console.log(gltf.asset)
+
             // add the new one
             GLTFViewer.gltfObject = gltf.scene
             GLTFViewer.scene.add(GLTFViewer.gltfObject);
+
+            const scale = gltf.asset.generator ? 0.01 : 1
+            GLTFViewer.gltfObject.scale.set(scale, scale, scale)
 
         }, undefined, function (error) {
             // log any errors
