@@ -47,7 +47,7 @@ export default class HttpServer {
             }
 
             let fileName = `${req.url.split(".")[0]}.glb`
-            fileName = fileName.replaceAll("%20", " ")
+            fileName = fileName.replace(/%20/g, " ")
             res.sendFile(fileName, options as SendFileOptions, function (err) {
                 if (err) {
                     next(err)
