@@ -38,7 +38,7 @@ export default class HttpServer {
 
         this.server.get(/\/\S+\.glb/, (req, res, next) => {
             let options = {
-                root: `${__dirname}\\..\\public\\GLB\\`,
+                root: `${__dirname}/../public/GLB/`,
                 dotfiles: 'deny',
                 headers: {
                     'x-timestamp': Date.now(),
