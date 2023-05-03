@@ -37,7 +37,7 @@ export default class HttpServer {
         })
 
         this.server.get(/\/\S+\.glb/, (req, res, next) => {
-            var options = {
+            let options = {
                 root: `${__dirname}\\..\\public\\GLB\\`,
                 dotfiles: 'deny',
                 headers: {
@@ -46,7 +46,8 @@ export default class HttpServer {
                 }
             }
 
-            var fileName = `${req.url.split(".")[0]}.glb`.replaceAll("%20", " ")
+            let fileName = `${req.url.split(".")[0]}.glb`
+            fileName = fileName.replaceAll("%20", " ")
             res.sendFile(fileName, options as SendFileOptions, function (err) {
                 if (err) {
                     next(err)
