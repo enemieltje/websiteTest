@@ -30,8 +30,11 @@ httpGetAsync("/getGLB", (responseText) => {
             select.add(option)
         })
 
+        if (optionSet.length == 1) select.style.display = "none";
+
         optionSelectDiv.append(select)
     });
+    optionCallback()
 })
 
 function optionCallback(e) {
@@ -42,6 +45,7 @@ function optionCallback(e) {
         fileName += select.value
         fileName += " "
     }
+    fileName = fileName.slice(0, -1)
     GLTFViewer.loadGltf(fileName)
 
 }

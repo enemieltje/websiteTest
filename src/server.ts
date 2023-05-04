@@ -12,6 +12,7 @@ export default class HttpServer {
     private gltfViewerFile = fs.readFileSync(`${this.path}/GLTFViewer.js`, { encoding: "utf-8" })
     private glbFiles: string[] = [];
     private optionArray: string[][] = [];
+    private glbFileMap: Map<string, string> = new Map()
     decoder = new TextDecoder();
 
     constructor() {
@@ -51,9 +52,11 @@ export default class HttpServer {
 
             // replace %20 with spaces
             let fileName = `${req.url.split(".")[0]}.glb`
-            fileName = "GLB/" + fileName.replace(/%20/g, " ")
-
+            fileName = fileName.replace(/%20/g, " ")
             console.log(fileName)
+            if (this.glbFileMap.has(fileName)) fileName = this.glbFileMap.get(fileName)!
+
+            fileName = "GLB/" + fileName
 
             if (!fs.existsSync(`./public/${fileName}`)) {
                 fileName = '/Bee.glb'
@@ -79,8 +82,10 @@ export default class HttpServer {
     readGlbFiles() {
         this.glbFiles = fs.readdirSync(this.glbPath);
         this.glbFiles.forEach((fileName, i) => {
-            fileName = fileName.replace(/  /g, " ")
-            this.glbFiles[i] = fileName;
+            let shortFileName = fileName.replace(/  /g, " ")
+            this.glbFiles[i] = shortFileName;
+            this.glbFileMap.set("/" + shortFileName, fileName);
+            console.log(`${shortFileName}: ${fileName}`)
         });
     }
 
