@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "tsx watch src/index.ts NODE_ENV=development",
-    "start": "sh start.sh"
+    "start": "tsx src/index.ts"
   },
   "dependencies": {
     "@types/express": "^4.17.17",
