@@ -22,7 +22,6 @@ export default class HttpServer {
     async start(port = 8080) {
         this.server = express();
         this.readGlbFiles();
-        this.getMotorOptions()
 
         this.server.get('/', (req: Request, res) => {
             res.send(this.htmlFile)
@@ -36,8 +35,7 @@ export default class HttpServer {
             res.send(fs.readFileSync(`${this.path}/GLTFViewer.js`, { encoding: "utf-8" }))
         })
         this.server.get('/getGLB', (req: Request, res) => {
-
-            res.send(this.optionArray)
+            res.send(this.glbFiles)
         })
 
         this.server.get(/\/\S+\.glb/, (req, res, next) => {
@@ -87,22 +85,6 @@ export default class HttpServer {
             this.glbFileMap.set("/" + shortFileName, fileName);
             console.log(`${shortFileName}: ${fileName}`)
         });
-    }
-
-    getMotorOptions() {
-        const optionSetArray: Set<string>[] = []
-        this.glbFiles.forEach((fileName) => {
-            const optionArray = fileName.split(" ")
-            optionArray.forEach((option, i) => {
-                optionSetArray[i] ? optionSetArray[i].add(option) : optionSetArray[i] = new Set([option])
-            })
-        })
-        optionSetArray.forEach((set, i) => {
-            set.forEach((v) => {
-                this.optionArray[i] ? this.optionArray[i].push(v) : this.optionArray[i] = [v]
-            })
-        })
-        console.log(this.optionArray)
     }
 
 }
