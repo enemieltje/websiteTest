@@ -78,10 +78,12 @@ export default class HttpServer {
     }
 
     readGlbFiles() {
-        this.glbFiles = fs.readdirSync(this.glbPath);
-        this.glbFiles.forEach((fileName, i) => {
+        const allGlbFiles = fs.readdirSync(this.glbPath);
+        allGlbFiles.forEach((fileName) => {
+            if (!/FP\S+ \S+-\d B\S* TE\S+ Assembly\.glb/g.test(fileName)) return
+
             let shortFileName = fileName.replace(/  /g, " ")
-            this.glbFiles[i] = shortFileName;
+            this.glbFiles.push(shortFileName)
             this.glbFileMap.set("/" + shortFileName, fileName);
             console.log(`${shortFileName}: ${fileName}`)
         });
