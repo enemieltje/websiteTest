@@ -8,10 +8,14 @@ let optionArray
 GLTFViewer.start()
 
 function httpGetAsync(url, callback) {
+    console.log(`GET: ${url}`)
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function () {
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+        {
+            console.log(`Response: ${xmlHttp.responseText}`)
             callback(xmlHttp.responseText);
+        }
     }
     xmlHttp.open("GET", url, true); // true for asynchronous
     xmlHttp.send(null);
@@ -19,8 +23,13 @@ function httpGetAsync(url, callback) {
 
 httpGetAsync("/getGLB", (responseText) => {
     glbFiles = JSON.parse(responseText)
-    optionArray = getMotorOptions(glbFiles)
+    httpGetAsync("/getOptions", (responseText) => {
+        optionArray = JSON.parse(responseText)
+        start();
+    })
+})
 
+function start() {
     optionArray.forEach((optionSet, i) => {
         const select = document.createElement("select");
         select.id = i;
@@ -38,7 +47,7 @@ httpGetAsync("/getGLB", (responseText) => {
         optionSelectDiv.append(select)
     });
     optionCallback()
-})
+}
 
 function optionCallback(e) {
     let fileName = ""
@@ -79,21 +88,4 @@ function update(select, fileName) {
     {
         option.style.display = enabledArray[option.id] ? "block" : "none"
     }
-}
-
-function getMotorOptions(_glbFiles) {
-    const optionSetArray = []
-    _glbFiles.forEach((fileName) => {
-        const options = fileName.split(" ")
-        options.forEach((option, i) => {
-            optionSetArray[i] ? optionSetArray[i].add(option) : optionSetArray[i] = new Set([option])
-        })
-    })
-    const _optionArray = []
-    optionSetArray.forEach((set, i) => {
-        set.forEach((v) => {
-            _optionArray[i] ? _optionArray[i].push(v) : _optionArray[i] = [v]
-        })
-    })
-    return _optionArray
 }
