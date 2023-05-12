@@ -13,7 +13,8 @@ function httpGetAsync(url, callback) {
     xmlHttp.onreadystatechange = function () {
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
         {
-            console.log(`Response: ${xmlHttp.responseText}`)
+            console.log(`Response: `)
+            console.log(JSON.parse(xmlHttp.responseText))
             callback(xmlHttp.responseText);
         }
     }
@@ -72,6 +73,7 @@ function optionCallback(e) {
  * @param {string} fileName
  */
 function update(select, fileName) {
+    fileName = fileName.replace(/  /g, " ")
     let regExString = fileName.replace(select.value, "(\\S*)")
     regExString = regExString.replace(".", "\\.");
     let regex = new RegExp(regExString);

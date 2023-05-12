@@ -97,18 +97,65 @@ export default class HttpServer {
     getMotorOptions() {
         const optionSetArray: Set<string>[] = []
         this.glbFiles.forEach((fileName) => {
-            const options = fileName.split(" ")
-            options.forEach((option, i) => {
-                optionSetArray[i] ? optionSetArray[i].add(option) : optionSetArray[i] = new Set([option])
-            })
-        })
+            const filenameSegments = fileName.split(" ")
+            let motorOptions = new MotorOptions();
+
+            filenameSegments.forEach((segment) => {
+                for (const optionName in motorOptions.options) {
+                    const option = motorOptions.options[optionName]
+                    if (option.regex.test(segment)) option.value = segment;
+                }
+            });
+
+            for (const optionName in motorOptions.options) {
+                const option = motorOptions.options[optionName]
+                const i = Object.keys(motorOptions.options).indexOf(optionName);
+                optionSetArray[i] ? optionSetArray[i].add(option.value) : optionSetArray[i] = new Set([option.value])
+            }
+        });
+
         this.optionArray = []
         optionSetArray.forEach((set, i) => {
             set.forEach((v) => {
                 this.optionArray[i] ? this.optionArray[i].push(v) : this.optionArray[i] = [v]
             })
         })
-        return this.optionArray
+        console.log(this.optionArray)
     }
+}
 
+class MotorOptions {
+    options: Record<string, Option> = {}
+
+    constructor() {
+        this.options.type = {
+            regex: /FP\S+/,
+            value: ""
+        }
+        this.options.size = {
+            regex: /\S+-\d/,
+            value: ""
+        }
+        this.options.feet = {
+            regex: /B3/,
+            value: ""
+        }
+        this.options.flens = {
+            regex: /B[^3 ]*/,
+            value: ""
+        }
+        this.options.cooling = {
+            regex: /TE\S+/,
+            value: ""
+        }
+        this.options.file = {
+            regex: /Assembly\.glb/,
+            value: ""
+        }
+    }
+}
+
+interface Option {
+    regex: RegExp,
+    value: string
 }

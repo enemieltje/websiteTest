@@ -97,6 +97,7 @@ export default class GLTFViewer {
      * @param {string} path the path to the gltf/glb file
      */
     static loadGltf(path) {
+        path = path.replace(/  /g, " ");
         console.log(`loading glb: ${path}`)
         GLTFViewer.loader.load(path, function (gltf) {
             // remove the old one
