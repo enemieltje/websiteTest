@@ -46,6 +46,7 @@ export default class HttpServer {
             // replace %20 with spaces
             let motorName = `${req.url.split(".")[0]}.glb`
             motorName = motorName.replace(/%20/g, " ")
+            motorName = motorName.replace("/", "")
 
             const motor = this.motorManager.getMotor(motorName)
             let fileName = motor ? "GLB/" + motor.fileName : '/Bee.glb'

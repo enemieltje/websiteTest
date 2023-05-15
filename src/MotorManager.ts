@@ -17,7 +17,7 @@ export class MotorManager {
                 console.warn(`Motor rejected! ${fileName}`)
                 return
             }
-            const motor = new Motor("/" + fileName)
+            const motor = new Motor(fileName)
 
             this.motorArray.push(motor)
         });
@@ -89,8 +89,8 @@ export class Motor {
     fileName: string;
 
     constructor(_fileName: string) {
-        this.fileName = _fileName
-        this.name = this.fileName.replace(/  /g, " ")
+        this.fileName = "/" + _fileName
+        this.name = _fileName.replace(/  /g, " ")
         const filenameSegments = this.name.split(" ")
 
         filenameSegments.forEach((segment) => {
