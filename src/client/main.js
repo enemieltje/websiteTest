@@ -65,8 +65,6 @@ function optionCallback(e) {
 
     for (const select of optionSelectDiv.children)
     {
-        // const optionName = motorManager.getMotor.getOptionName(select.value)
-        // motorOptions[optionName] = select.value
         motorName += select.value
         motorName += " "
     }
@@ -81,11 +79,6 @@ function optionCallback(e) {
         const select = optionSelectDiv.children.item(i)
         if (select.children.length > 1) update(select, motorOptions, optionName)
     })
-
-    // for (const select of optionSelectDiv.children)
-    // {
-    //     if (select.children.length > 1) update(select, motorOptions)
-    // }
 }
 
 /**
@@ -94,9 +87,6 @@ function optionCallback(e) {
  * @param {string} motorName
  */
 function update(select, motorOptions, optionName) {
-    // motorName = motorName.replace(/  /g, " ")
-
-    // select.value is one of the motor options. forEach those instead of the selects
     let regExString = ""
 
     Object.keys(motorManager.optionObject).forEach((_optionName, i) => {
@@ -104,7 +94,6 @@ function update(select, motorOptions, optionName) {
         regExString += optionName == _optionName ? "(\\S*)" : motorOptions[_optionName]
     })
 
-    // let regExString = motorName.replace(select.value, "(\\S*)")
     regExString = regExString.replace(".", "\\.");
     regExString = regExString.replace(/  /g, " ");
     console.log(regExString)
@@ -128,7 +117,6 @@ function update(select, motorOptions, optionName) {
 
     for (const option of select.children)
     {
-        // option.style.display = enabledArray[option.id] ? "block" : "none"
         option.className = enabledArray[option.id] ? "enabled" : "disabled"
     }
 }

@@ -25,7 +25,6 @@ export class MotorManager {
         console.log(name)
         let returnMotor: Motor
         this.motorArray.forEach((motor) => {
-            // console.log(`checking ${motor.name} = ${name}`)
             if (motor.name == name) returnMotor = motor
         })
         return returnMotor!
@@ -52,11 +51,6 @@ export class MotorManager {
             const optionSet = optionSetObject[optionName]
             this.optionObject[optionName] = Array.from(optionSet)
         }
-        // optionSetArray.forEach((set, i) => {
-        //     set.forEach((v) => {
-        //         this.optionArray[i] ? this.optionArray[i].push(v) : this.optionArray[i] = [v]
-        //     })
-        // })
         console.log(this.optionObject)
     }
     static getMotor() {
@@ -90,30 +84,6 @@ export class Motor {
     fileName: string;
 
     constructor(_fileName: string) {
-        // this.options.type = {
-        //     regex: /FP\S+/,
-        //     value: ""
-        // }
-        // this.options.size = {
-        //     regex: /\S+-\d/,
-        //     value: ""
-        // }
-        // this.options.feet = {
-        //     regex: /B3/,
-        //     value: ""
-        // }
-        // this.options.flens = {
-        //     regex: /B[^3 ]*/,
-        //     value: ""
-        // }
-        // this.options.cooling = {
-        //     regex: /TE\S+/,
-        //     value: ""
-        // }
-        // this.options.file = {
-        //     regex: /Assembly\.glb/,
-        //     value: ""
-        // }
         this.fileName = _fileName
         this.name = this.fileName.replace(/  /g, " ")
         const filenameSegments = this.name.split(" ")
@@ -122,22 +92,11 @@ export class Motor {
 
             const optionName = Motor.getOptionName(segment)
             this.options[optionName] = segment;
-
-            // for (const optionName in this.options) {
-            //     const regex = Motor.regex[optionName]
-            //     if (regex.test(segment))
-            //         this.options[optionName] = segment;
-            // }
         });
     }
 
     toArray() {
         return Object.values(this.options)
-        // const arr = []
-        // for (const optionName in this.options) {
-        //     arr.push(this.options[optionName].value)
-        // }
-        // return arr
     }
 
     toString() {
@@ -161,7 +120,3 @@ export class Motor {
     }
 }
 
-// interface Option {
-//     regex: RegExp,
-//     value: string
-// }
