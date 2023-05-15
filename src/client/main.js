@@ -2,15 +2,13 @@ import GLTFViewer from './GLTFViewer.js'
 
 const optionSelectDiv = document.createElement("div");
 document.body.appendChild(optionSelectDiv);
-let glbFiles = [];
-let optionObject;
 let motorManager
 
 GLTFViewer.start()
 
 function httpGetAsync(url, callback) {
     console.log(`GET: ${url}`)
-    var xmlHttp = new XMLHttpRequest();
+    const xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function () {
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
         {
@@ -22,14 +20,6 @@ function httpGetAsync(url, callback) {
     xmlHttp.open("GET", url, true); // true for asynchronous
     xmlHttp.send(null);
 }
-
-// httpGetAsync("/getGLB", (responseText) => {
-//     glbFiles = JSON.parse(responseText)
-//     httpGetAsync("/getOptions", (responseText) => {
-//         optionArray = JSON.parse(responseText)
-//         start();
-//     })
-// })
 
 httpGetAsync("/getMotorManager", (responseText) => {
     motorManager = JSON.parse(responseText);
@@ -90,8 +80,14 @@ function update(select, motorOptions, optionName) {
     let regExString = ""
 
     Object.keys(motorManager.optionObject).forEach((_optionName, i) => {
-        if (i) regExString += " "
-        regExString += optionName == _optionName ? "(\\S*)" : motorOptions[_optionName]
+        if (optionName == _optionName)
+        {
+            regExString += " *(\\S*)"
+        } else
+        {
+            if (i) regExString += " "
+            regExString += motorOptions[_optionName]
+        }
     })
 
     regExString = regExString.replace(".", "\\.");
@@ -102,14 +98,6 @@ function update(select, motorOptions, optionName) {
 
     motorManager.motorArray.forEach((motor) => {
         const regExpExecArray = regex.exec(motor.name)
-        if (!regExpExecArray) return
-        const id = motorManager.optionObject[optionName].indexOf(regExpExecArray[1])
-        enabledArray[id] = true
-    })
-
-
-    glbFiles.forEach((fileName) => {
-        const regExpExecArray = regex.exec(fileName)
         if (!regExpExecArray) return
         const id = motorManager.optionObject[optionName].indexOf(regExpExecArray[1])
         enabledArray[id] = true
