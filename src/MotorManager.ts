@@ -13,7 +13,10 @@ export class MotorManager {
     private readGlbFiles() {
         const allGlbFiles = fs.readdirSync(this.dirPath);
         allGlbFiles.forEach((fileName) => {
-            if (!/FP\S+ \S+-\d [B3 ]*B\S* [KK\d ]*TE\S+ Assembly\.glb/g.test(fileName)) return
+            if (!/FP\S+ \S+-\d [B3 ]*B\S* [KK\d ]*TE\S+ Assembly\.glb/g.test(fileName)) {
+                console.warn(`Motor rejected! ${fileName}`)
+                return
+            }
             const motor = new Motor("/" + fileName)
 
             this.motorArray.push(motor)
